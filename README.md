@@ -61,7 +61,7 @@ and lights are fixed; robot roots move sideways with fixed joints. All
 replicas use the same motion phase. HyperLux uses AA1 and batch 128; Warp
 uses native RGB. The Warp timings below predate the blue-sky update and
 used a black background. The warehouse and outdoor HyperLux/RTX measurements
-also predate a box-texture fix. Warehouse A now uses a plain floor in all three
+also predate a box-texture fix. Both warehouses now use a plain floor in all three
 renderers. The affected results are being refreshed.
 
 Throughput is aggregate images per second. Speedup is HyperLux / Warp.
@@ -150,6 +150,8 @@ All three renderers use the same plain floor and the original fixed lamp.
 | Moving robot | ![Warehouse A: HyperLux, moving robot](docs/media/windowless_warehouse_a/hyperlux-moving-robot.gif) | ![Warehouse A: MuJoCo Warp, moving robot](docs/media/windowless_warehouse_a/mujoco_warp-moving-robot.gif) | ![Warehouse A: Isaac RTX, moving robot](docs/media/windowless_warehouse_a/rtx-moving-robot.gif) |
 
 ### Warehouse B
+
+All three renderers use the same plain floor and the original fixed lamp.
 
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
