@@ -52,7 +52,8 @@ packed into one asset to reduce pose-update work.
 
 ## Lighting and supported features
 
-The backend supports perspective cameras, textures, normal and packed ORM
+The backend supports perspective cameras, 2D textures on meshes, planes and
+boxes, normal and packed ORM
 maps, moving cameras and objects, and hard shadows from directional, point
 and spot lights. Set `hyperlux_background` for the background RGB color.
 

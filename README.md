@@ -5,8 +5,8 @@
 and hard shadows. MuJoCo Warp still handles physics, depth, segmentation
 and raycasts.
 
-On an RTX 4090, HyperLux AA1 rendered our six moving-robot scenes **3.62x to
-7.47x faster than Warp** at 4096 environments and 640x480. Results depend on
+In the original RTX 4090 measurements, HyperLux AA1 rendered our six scenes
+**3.62x to 7.47x faster than Warp** at 4096 environments and 640x480. Results depend on
 the scene and rendering settings; the measurements below exclude physics
 and policy inference.
 
@@ -60,7 +60,8 @@ RTX 4090, 4096 environments, one 640x480 RGB camera per environment. Cameras
 and lights are fixed; robot roots move sideways with fixed joints. All
 replicas use the same motion phase. HyperLux uses AA1 and batch 128; Warp
 uses native RGB. The Warp timings below predate the blue-sky update and
-used a black background; the three sunlit scenes will be remeasured.
+used a black background. The warehouse and outdoor HyperLux/RTX measurements
+also predate a box-texture fix. Those results are being refreshed.
 
 Throughput is aggregate images per second. Speedup is HyperLux / Warp.
 
@@ -105,7 +106,8 @@ AA1 with hard shadows; RTX uses DLAA, four direct samples, eight ray bounces
 and fixed exposure (f/5, 1/50 s, ISO 100). Light intensities are converted for
 each backend. Sunlit RTX scenes also use a sky dome.
 
-The same lighting calibration is shared across scenes. HyperLux's diffuse-fill
+The ground and walls use the same source textures across backends, including
+box-shaped surfaces. The same lighting calibration is shared across scenes. HyperLux's diffuse-fill
 estimate does not reproduce RTX global illumination. Windowed rooms can look
 brighter and flatter, and some warehouse areas darker. HyperLux and Warp use
 a matching solid blue background in sunlit scenes; this adds no illumination.

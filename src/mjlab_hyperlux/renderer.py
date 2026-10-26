@@ -31,6 +31,7 @@ from torch.utils.dlpack import from_dlpack
 from warp._src.context import Device
 
 from mjlab_hyperlux.config import HyperLuxCameraSensorCfg
+from mjlab_hyperlux.geometry import box_mesh
 
 
 @wp.kernel
@@ -129,14 +130,7 @@ def _object(model: mujoco.MjModel, geom: int, textures: bool, fidelity: str):
     # A shared-vertex cube gets smoothed corner normals from trimesh. Boxes
     # need discontinuous face normals: smoothing makes room walls look curved
     # under point lights and biases the origins of shadow/reflection rays.
-    vertices = np.asarray(mesh.vertices)[mesh.faces.ravel()]
-    normals = np.repeat(mesh.face_normals, 3, axis=0)
-    mesh = trimesh.Trimesh(
-      vertices=vertices,
-      faces=np.arange(len(vertices)).reshape(-1, 3),
-      vertex_normals=normals,
-      process=False,
-    )
+    mesh = box_mesh(model, geom, textures)
   mat = model.geom_matid[geom]
   rgba = model.mat_rgba[mat] if mat >= 0 else model.geom_rgba[geom]
   metallic = float(model.mat_metallic[mat]) if mat >= 0 else 0.0

@@ -191,7 +191,8 @@ def test_rgb_with_raycast():
   scene.sensor_context.close()
 
 
-def test_textured_plane_and_separate_camera_batches():
+@pytest.mark.parametrize("floor_type", ["plane", "box"])
+def test_textured_primitives_and_separate_camera_batches(floor_type):
   xml = XML.replace(
     "<worldbody>",
     """<asset>
@@ -200,6 +201,8 @@ def test_textured_plane_and_separate_camera_batches():
     <material name="floor_mat" texture="tiles" texrepeat="4 4"/>
   </asset><worldbody>""",
   ).replace('size="4 4 .1" rgba=".3 .3 .3 1"', 'size="0 0 .1" material="floor_mat"')
+  if floor_type == "box":
+    xml = xml.replace('type="plane" size="0 0 .1"', 'type="box" size="4 4 .1"')
   cameras = (
     HyperLuxCameraSensorCfg(name="a", camera_name="world/cam", width=32, height=24),
     HyperLuxCameraSensorCfg(
