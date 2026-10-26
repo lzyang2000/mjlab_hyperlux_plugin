@@ -105,6 +105,18 @@ def main(
     ),
     "cuda:0",
   )
+  if backend == "mujoco_warp":
+    # Warp displays sky texture bytes directly; match HyperLux's sRGB output.
+    sky_rgb = tuple(1.055 * value ** (1 / 2.4) - 0.055 for value in (0.45, 0.60, 0.78))
+    scene.spec.add_texture(
+      name="sky",
+      type=mujoco.mjtTexture.mjTEXTURE_SKYBOX,
+      builtin=mujoco.mjtBuiltin.mjBUILTIN_FLAT,
+      width=16,
+      height=16,
+      rgb1=sky_rgb,
+      rgb2=sky_rgb,
+    )
   model = scene.compile()
   model.vis.headlight.active = 0
   for light in range(model.nlight):

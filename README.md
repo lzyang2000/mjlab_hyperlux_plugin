@@ -59,7 +59,8 @@ saved comparisons, not bundled scene assets.
 RTX 4090, 4096 environments, one 640x480 RGB camera per environment. Cameras
 and lights are fixed; robot roots move sideways with fixed joints. All
 replicas use the same motion phase. HyperLux uses AA1 and batch 128; Warp
-uses native RGB.
+uses native RGB. The Warp timings below predate the blue-sky update and
+used a black background; the three sunlit scenes will be remeasured.
 
 Throughput is aggregate images per second. Speedup is HyperLux / Warp.
 
@@ -106,8 +107,9 @@ each backend. Sunlit RTX scenes also use a sky dome.
 
 The same lighting calibration is shared across scenes. HyperLux's diffuse-fill
 estimate does not reproduce RTX global illumination. Windowed rooms can look
-brighter and flatter, and some warehouse areas darker. Warp shows black outside
-the geometry. The outdoor RTX view is overexposed at this indoor exposure.
+brighter and flatter, and some warehouse areas darker. HyperLux and Warp use
+a matching solid blue background in sunlit scenes; this adds no illumination.
+The outdoor RTX view is overexposed at this indoor exposure.
 
 The GIFs move only the robot, with the same 24-frame loop and fixed lights.
 Playback is 10 fps, not a measure of renderer speed. GIF palette quantization
@@ -118,8 +120,6 @@ can introduce small color differences from the PNGs.
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
 | Overview | ![Windowed office: HyperLux, overview](docs/media/windowed_office/hyperlux-overview-shadows.png) | ![Windowed office: MuJoCo Warp, overview](docs/media/windowed_office/mujoco_warp-overview-shadows.png) | ![Windowed office: Isaac RTX, overview](docs/media/windowed_office/rtx-overview.png) |
-| Eye level | ![Windowed office: HyperLux, eye level](docs/media/windowed_office/hyperlux-eye_level-shadows.png) | ![Windowed office: MuJoCo Warp, eye level](docs/media/windowed_office/mujoco_warp-eye_level-shadows.png) | ![Windowed office: Isaac RTX, eye level](docs/media/windowed_office/rtx-eye_level.png) |
-| Robot detail | ![Windowed office: HyperLux, robot detail](docs/media/windowed_office/hyperlux-robot_detail-shadows.png) | ![Windowed office: MuJoCo Warp, robot detail](docs/media/windowed_office/mujoco_warp-robot_detail-shadows.png) | ![Windowed office: Isaac RTX, robot detail](docs/media/windowed_office/rtx-robot_detail.png) |
 | Moving robot | ![Windowed office: HyperLux, moving robot](docs/media/windowed_office/hyperlux-moving-robot.gif) | ![Windowed office: MuJoCo Warp, moving robot](docs/media/windowed_office/mujoco_warp-moving-robot.gif) | ![Windowed office: Isaac RTX, moving robot](docs/media/windowed_office/rtx-moving-robot.gif) |
 
 ### Home lounge
@@ -127,8 +127,6 @@ can introduce small color differences from the PNGs.
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
 | Overview | ![Home lounge: HyperLux, overview](docs/media/home/hyperlux-overview-shadows.png) | ![Home lounge: MuJoCo Warp, overview](docs/media/home/mujoco_warp-overview-shadows.png) | ![Home lounge: Isaac RTX, overview](docs/media/home/rtx-overview.png) |
-| Eye level | ![Home lounge: HyperLux, eye level](docs/media/home/hyperlux-eye_level-shadows.png) | ![Home lounge: MuJoCo Warp, eye level](docs/media/home/mujoco_warp-eye_level-shadows.png) | ![Home lounge: Isaac RTX, eye level](docs/media/home/rtx-eye_level.png) |
-| Robot detail | ![Home lounge: HyperLux, robot detail](docs/media/home/hyperlux-robot_detail-shadows.png) | ![Home lounge: MuJoCo Warp, robot detail](docs/media/home/mujoco_warp-robot_detail-shadows.png) | ![Home lounge: Isaac RTX, robot detail](docs/media/home/rtx-robot_detail.png) |
 | Moving robot | ![Home lounge: HyperLux, moving robot](docs/media/home/hyperlux-moving-robot.gif) | ![Home lounge: MuJoCo Warp, moving robot](docs/media/home/mujoco_warp-moving-robot.gif) | ![Home lounge: Isaac RTX, moving robot](docs/media/home/rtx-moving-robot.gif) |
 
 ### Laboratory
@@ -136,8 +134,6 @@ can introduce small color differences from the PNGs.
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
 | Overview | ![Laboratory: HyperLux, overview](docs/media/laboratory/hyperlux-overview-shadows.png) | ![Laboratory: MuJoCo Warp, overview](docs/media/laboratory/mujoco_warp-overview-shadows.png) | ![Laboratory: Isaac RTX, overview](docs/media/laboratory/rtx-overview.png) |
-| Eye level | ![Laboratory: HyperLux, eye level](docs/media/laboratory/hyperlux-eye_level-shadows.png) | ![Laboratory: MuJoCo Warp, eye level](docs/media/laboratory/mujoco_warp-eye_level-shadows.png) | ![Laboratory: Isaac RTX, eye level](docs/media/laboratory/rtx-eye_level.png) |
-| Robot detail | ![Laboratory: HyperLux, robot detail](docs/media/laboratory/hyperlux-robot_detail-shadows.png) | ![Laboratory: MuJoCo Warp, robot detail](docs/media/laboratory/mujoco_warp-robot_detail-shadows.png) | ![Laboratory: Isaac RTX, robot detail](docs/media/laboratory/rtx-robot_detail.png) |
 | Moving robot | ![Laboratory: HyperLux, moving robot](docs/media/laboratory/hyperlux-moving-robot.gif) | ![Laboratory: MuJoCo Warp, moving robot](docs/media/laboratory/mujoco_warp-moving-robot.gif) | ![Laboratory: Isaac RTX, moving robot](docs/media/laboratory/rtx-moving-robot.gif) |
 
 ### Warehouse A
@@ -145,8 +141,6 @@ can introduce small color differences from the PNGs.
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
 | Overview | ![Warehouse A: HyperLux, overview](docs/media/windowless_warehouse_a/hyperlux-overview-shadows.png) | ![Warehouse A: MuJoCo Warp, overview](docs/media/windowless_warehouse_a/mujoco_warp-overview-shadows.png) | ![Warehouse A: Isaac RTX, overview](docs/media/windowless_warehouse_a/rtx-overview.png) |
-| Eye level | ![Warehouse A: HyperLux, eye level](docs/media/windowless_warehouse_a/hyperlux-eye_level-shadows.png) | ![Warehouse A: MuJoCo Warp, eye level](docs/media/windowless_warehouse_a/mujoco_warp-eye_level-shadows.png) | ![Warehouse A: Isaac RTX, eye level](docs/media/windowless_warehouse_a/rtx-eye_level.png) |
-| Robot detail | ![Warehouse A: HyperLux, robot detail](docs/media/windowless_warehouse_a/hyperlux-robot_detail-shadows.png) | ![Warehouse A: MuJoCo Warp, robot detail](docs/media/windowless_warehouse_a/mujoco_warp-robot_detail-shadows.png) | ![Warehouse A: Isaac RTX, robot detail](docs/media/windowless_warehouse_a/rtx-robot_detail.png) |
 | Moving robot | ![Warehouse A: HyperLux, moving robot](docs/media/windowless_warehouse_a/hyperlux-moving-robot.gif) | ![Warehouse A: MuJoCo Warp, moving robot](docs/media/windowless_warehouse_a/mujoco_warp-moving-robot.gif) | ![Warehouse A: Isaac RTX, moving robot](docs/media/windowless_warehouse_a/rtx-moving-robot.gif) |
 
 ### Warehouse B
@@ -154,8 +148,6 @@ can introduce small color differences from the PNGs.
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
 | Overview | ![Warehouse B: HyperLux, overview](docs/media/windowless_warehouse_b/hyperlux-overview-shadows.png) | ![Warehouse B: MuJoCo Warp, overview](docs/media/windowless_warehouse_b/mujoco_warp-overview-shadows.png) | ![Warehouse B: Isaac RTX, overview](docs/media/windowless_warehouse_b/rtx-overview.png) |
-| Eye level | ![Warehouse B: HyperLux, eye level](docs/media/windowless_warehouse_b/hyperlux-eye_level-shadows.png) | ![Warehouse B: MuJoCo Warp, eye level](docs/media/windowless_warehouse_b/mujoco_warp-eye_level-shadows.png) | ![Warehouse B: Isaac RTX, eye level](docs/media/windowless_warehouse_b/rtx-eye_level.png) |
-| Robot detail | ![Warehouse B: HyperLux, robot detail](docs/media/windowless_warehouse_b/hyperlux-robot_detail-shadows.png) | ![Warehouse B: MuJoCo Warp, robot detail](docs/media/windowless_warehouse_b/mujoco_warp-robot_detail-shadows.png) | ![Warehouse B: Isaac RTX, robot detail](docs/media/windowless_warehouse_b/rtx-robot_detail.png) |
 | Moving robot | ![Warehouse B: HyperLux, moving robot](docs/media/windowless_warehouse_b/hyperlux-moving-robot.gif) | ![Warehouse B: MuJoCo Warp, moving robot](docs/media/windowless_warehouse_b/mujoco_warp-moving-robot.gif) | ![Warehouse B: Isaac RTX, moving robot](docs/media/windowless_warehouse_b/rtx-moving-robot.gif) |
 
 ### Outdoor loading yard
@@ -163,8 +155,6 @@ can introduce small color differences from the PNGs.
 | View | HyperLux | MuJoCo Warp | Isaac RTX |
 | --- | --- | --- | --- |
 | Overview | ![Outdoor loading yard: HyperLux, overview](docs/media/outdoor/hyperlux-overview-shadows.png) | ![Outdoor loading yard: MuJoCo Warp, overview](docs/media/outdoor/mujoco_warp-overview-shadows.png) | ![Outdoor loading yard: Isaac RTX, overview](docs/media/outdoor/rtx-overview.png) |
-| Eye level | ![Outdoor loading yard: HyperLux, eye level](docs/media/outdoor/hyperlux-eye_level-shadows.png) | ![Outdoor loading yard: MuJoCo Warp, eye level](docs/media/outdoor/mujoco_warp-eye_level-shadows.png) | ![Outdoor loading yard: Isaac RTX, eye level](docs/media/outdoor/rtx-eye_level.png) |
-| Robot detail | ![Outdoor loading yard: HyperLux, robot detail](docs/media/outdoor/hyperlux-robot_detail-shadows.png) | ![Outdoor loading yard: MuJoCo Warp, robot detail](docs/media/outdoor/mujoco_warp-robot_detail-shadows.png) | ![Outdoor loading yard: Isaac RTX, robot detail](docs/media/outdoor/rtx-robot_detail.png) |
 | Moving robot | ![Outdoor loading yard: HyperLux, moving robot](docs/media/outdoor/hyperlux-moving-robot.gif) | ![Outdoor loading yard: MuJoCo Warp, moving robot](docs/media/outdoor/mujoco_warp-moving-robot.gif) | ![Outdoor loading yard: Isaac RTX, moving robot](docs/media/outdoor/rtx-moving-robot.gif) |
 
 ## Limits and license
