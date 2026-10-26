@@ -5,10 +5,10 @@
 and hard shadows. MuJoCo Warp still handles physics, depth, segmentation
 and raycasts.
 
-In the original RTX 4090 measurements, HyperLux AA1 rendered our six scenes
-**3.62x to 7.47x faster than Warp** at 4096 environments and 640x480. Results depend on
-the scene and rendering settings; the measurements below exclude physics
-and policy inference.
+On an RTX 4090, HyperLux AA1 rendered these six scenes
+**3.53x to 6.81x faster than Warp** at 4096 environments and 640x480.
+Results depend on the scene and rendering settings. The measurements below
+exclude physics and policy inference.
 
 ## Install
 
@@ -59,32 +59,33 @@ saved comparisons, not bundled scene assets.
 RTX 4090, 4096 environments, one 640x480 RGB camera per environment. Cameras
 and lights are fixed; robot roots move sideways with fixed joints. All
 replicas use the same motion phase. HyperLux uses AA1 and batch 128; Warp
-uses native RGB. The Warp timings below predate the blue-sky update and
-used a black background. The warehouse and outdoor HyperLux/RTX measurements
-also predate a box-texture fix. Both warehouses now use a plain floor in all three
-renderers. The affected results are being refreshed.
+uses native RGB. All 18 scene/backend runs passed validation.
+
+The measurements include Warp's blue background in sunlit scenes, corrected
+box textures, and the restored plain floors in both warehouses. Saved records
+include material revisions, scene XML hashes and sky colors where available.
 
 Throughput is aggregate images per second. Speedup is HyperLux / Warp.
 
 | Scene | HyperLux images/s | Warp images/s | Speedup | RTX images/s |
 | --- | ---: | ---: | ---: | ---: |
-| Windowed office | 14,050 | 1,881 | 7.47x | 32.6 |
-| Home lounge | 12,858 | 3,549 | 3.62x | Not measured |
-| Laboratory | 15,456 | 2,789 | 5.54x | Not measured |
-| Warehouse A | 11,179 | 1,721 | 6.49x | Not measured |
-| Warehouse B | 12,534 | 1,678 | 7.47x | Not measured |
-| Outdoor loading yard | 20,747 | 5,364 | 3.87x | Not measured |
+| Windowed office | 14,050 | 2,063 | 6.81x | 32.6 |
+| Home lounge | 12,858 | 3,627 | 3.55x | 36.3 |
+| Laboratory | 15,456 | 2,789 | 5.54x | 39.7 |
+| Warehouse A | 11,799 | 1,831 | 6.44x | 49.4 |
+| Warehouse B | 12,037 | 1,828 | 6.58x | 47.5 |
+| Outdoor loading yard | 20,385 | 5,768 | 3.53x | 156.8 |
 
 Sampled peak VRAM in GiB, including startup and the desktop:
 
 | Scene | HyperLux | Warp | RTX |
 | --- | ---: | ---: | ---: |
 | Windowed office | 14.79 | 19.15 | 17.10 |
-| Home lounge | 13.78 | 19.18 | Not measured |
-| Laboratory | 14.49 | 19.54 | Not measured |
-| Warehouse A | 8.19 | 13.46 | Not measured |
-| Warehouse B | 8.19 | 13.11 | Not measured |
-| Outdoor loading yard | 7.28 | 13.07 | Not measured |
+| Home lounge | 13.78 | 19.18 | 16.69 |
+| Laboratory | 14.49 | 19.54 | 17.03 |
+| Warehouse A | 8.20 | 13.11 | 17.10 |
+| Warehouse B | 8.20 | 13.11 | 17.17 |
+| Outdoor loading yard | 7.28 | 13.07 | 16.80 |
 
 Timings include pose updates, transforms, rendering and the full GPU RGB
 output. They exclude setup, physics, CPU image copies and encoding. HyperLux
@@ -92,12 +93,12 @@ and Warp use the median of three repeats of five full batches after three
 warmup batches. VRAM was sampled every 200 ms and may miss brief peaks.
 [Saved measurements](docs/benchmarks/4096.json) include the raw timing samples.
 
-The RTX measurement uses Isaac Lab 3.0 / Isaac Sim 6.2 with 16 cameras retargeted
-across 4096 real scene replicas. It includes that scheduling cost and uses
-three single-batch repeats after warmup. Retargeting limits temporal
-accumulation, so these frames are noisier than the settled RTX GIFs. Only the
-office has a validated RTX measurement. These compare the current integrations
-at their stated settings, not identical image quality or maximum renderer speed.
+RTX uses Isaac Lab 3.0 / Isaac Sim 6.2 with 16 cameras retargeted across
+4096 real scene replicas. Timings include that scheduling cost and use three
+single-batch repeats after one warmup batch. Retargeting limits temporal
+accumulation, so these frames are noisier than the settled RTX GIFs. These
+results compare the current integrations at their stated settings; image
+quality differs, and they do not establish maximum renderer speed.
 
 ## Image comparisons
 

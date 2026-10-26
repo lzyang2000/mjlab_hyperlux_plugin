@@ -3,10 +3,10 @@
     "backend": "hyperlux",
     "scene": "windowed_office",
     "num_envs": 4096,
+    "hyperlux_batch_size": 128,
     "width": 640,
     "height": 480,
     "aa_grid": 1,
-    "hyperlux_batch_size": 128,
     "shadows": true,
     "lighting_profile": "sun+indoor",
     "background_linear_rgb": [
@@ -52,6 +52,11 @@
         ]
       }
     ],
+    "geoms": 174,
+    "meshes": 110,
+    "triangles": 971233,
+    "textures": 64,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
         294.6955549996346,
@@ -71,7 +76,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -86,28 +90,29 @@
     "setup_to_first_frame_s": 63.95735096593853,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 14.95806884765625,
-    "geoms": 174,
-    "meshes": 110,
-    "triangles": 971233,
-    "textures": 64,
     "run": {
-      "status": "passed",
+      "wall_seconds": 72.86531565897167,
       "device_peak_mib_sampled": 15144,
       "memory_sampling_ms": 200,
-      "wall_seconds": 72.86531565897167
+      "status": "passed"
     }
   },
   {
     "backend": "mujoco_warp",
     "scene": "windowed_office",
     "num_envs": 4096,
+    "hyperlux_batch_size": null,
     "width": 640,
     "height": 480,
     "aa_grid": null,
-    "hyperlux_batch_size": null,
     "shadows": true,
     "lighting_profile": "sun+indoor",
     "background_linear_rgb": null,
+    "skybox_srgb": [
+      0.7014107175340978,
+      0.7977377330312598,
+      0.8962438838245138
+    ],
     "active_lights": [
       {
         "name": "factory/sun",
@@ -146,14 +151,19 @@
         ]
       }
     ],
+    "geoms": 174,
+    "meshes": 110,
+    "triangles": 971233,
+    "textures": 65,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
-        2230.4951797937974,
-        2177.9952746117488,
-        2164.006401388906
+        2042.812567600049,
+        1985.2543412009254,
+        1972.1521448111162
       ],
-      "median_ms": 2177.9952746117488,
-      "images_per_second": 1880.628506290105,
+      "median_ms": 1985.2543412009254,
+      "images_per_second": 2063.211707937753,
       "steps": 5,
       "warmup": 3,
       "repeats": 3,
@@ -165,7 +175,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -177,27 +186,46 @@
       "max_mae_from_first": 0.0,
       "motion_mae": 2.68112850189209
     },
-    "setup_to_first_frame_s": 7.3887795470654964,
+    "setup_to_first_frame_s": 5.964560745982453,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 19.14752197265625,
-    "geoms": 174,
-    "meshes": 110,
-    "triangles": 971233,
-    "textures": 64,
     "run": {
-      "status": "passed",
+      "wall_seconds": 45.450122270034626,
       "device_peak_mib_sampled": 19608,
       "memory_sampling_ms": 200,
-      "wall_seconds": 52.36604159302078
+      "status": "passed"
     }
   },
   {
-    "backend": "isaaclab-native-rtx",
     "scene": "windowed_office",
+    "backend": "isaaclab-native-rtx",
     "num_envs": 4096,
     "width": 640,
     "height": 480,
     "camera_batch_size": 16,
+    "timing": {
+      "samples_ms": [
+        127857.65044600703,
+        125638.39857210405,
+        121791.5920530213
+      ],
+      "median_ms": 125638.39857210405,
+      "images_per_second": 32.60149800181749,
+      "steps": 1,
+      "warmup": 1,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "setup_to_first_frame_s": 159.25858883094043,
+    "device_used_before_gib": 2.9632568359375,
+    "device_used_after_gib": 17.1009521484375,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "lights": [
       {
         "name": "factory/sun",
@@ -270,35 +298,6 @@
         ]
       }
     ],
-    "timing": {
-      "samples_ms": [
-        127857.65044600703,
-        125638.39857210405,
-        121791.5920530213
-      ],
-      "median_ms": 125638.39857210405,
-      "images_per_second": 32.60149800181749,
-      "steps": 1,
-      "warmup": 1,
-      "repeats": 3,
-      "num_envs": 4096,
-      "views": [
-        "overview"
-      ],
-      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
-      "synchronization": "CUDA synchronization at each repeat boundary",
-      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
-    },
-    "quality": {
-      "aa": "DLAA",
-      "samples_per_pixel": 4,
-      "max_bounces": 8
-    },
-    "effective_rtx_settings": {
-      "/rtx/rendermode": "RealTimePathTracing",
-      "/rtx/rtpt/maxBounces": 8
-    },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "all_nonblack": true,
       "max_mae_from_first": 5.419166564941406,
@@ -313,24 +312,30 @@
     },
     "scene_revision": "room-template-without-static-robot-v2",
     "scheduling": "real USD replicas; native RTX camera retargeting; active local lights only; full RGB tensor retained",
-    "setup_to_first_frame_s": 159.25858883094043,
-    "device_used_before_gib": 2.9632568359375,
-    "device_used_after_gib": 17.1009521484375,
+    "quality": {
+      "aa": "DLAA",
+      "samples_per_pixel": 4,
+      "max_bounces": 8
+    },
+    "effective_rtx_settings": {
+      "/rtx/rendermode": "RealTimePathTracing",
+      "/rtx/rtpt/maxBounces": 8
+    },
     "run": {
-      "status": "passed",
+      "wall_seconds": 784.3023905949667,
       "device_peak_mib_sampled": 17512,
       "memory_sampling_ms": 200,
-      "wall_seconds": 784.3023905949667
+      "status": "passed"
     }
   },
   {
     "backend": "hyperlux",
     "scene": "home",
     "num_envs": 4096,
+    "hyperlux_batch_size": 128,
     "width": 640,
     "height": 480,
     "aa_grid": 1,
-    "hyperlux_batch_size": 128,
     "shadows": true,
     "lighting_profile": "sun+indoor",
     "background_linear_rgb": [
@@ -376,6 +381,11 @@
         ]
       }
     ],
+    "geoms": 101,
+    "meshes": 112,
+    "triangles": 956129,
+    "textures": 70,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
         318.54557099286467,
@@ -395,7 +405,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -410,28 +419,29 @@
     "setup_to_first_frame_s": 11.748690747073852,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 13.94830322265625,
-    "geoms": 101,
-    "meshes": 112,
-    "triangles": 956129,
-    "textures": 70,
     "run": {
-      "status": "passed",
+      "wall_seconds": 21.25977675197646,
       "device_peak_mib_sampled": 14110,
       "memory_sampling_ms": 200,
-      "wall_seconds": 21.25977675197646
+      "status": "passed"
     }
   },
   {
     "backend": "mujoco_warp",
     "scene": "home",
     "num_envs": 4096,
+    "hyperlux_batch_size": null,
     "width": 640,
     "height": 480,
     "aa_grid": null,
-    "hyperlux_batch_size": null,
     "shadows": true,
     "lighting_profile": "sun+indoor",
     "background_linear_rgb": null,
+    "skybox_srgb": [
+      0.7014107175340978,
+      0.7977377330312598,
+      0.8962438838245138
+    ],
     "active_lights": [
       {
         "name": "factory/sun",
@@ -470,14 +480,19 @@
         ]
       }
     ],
+    "geoms": 101,
+    "meshes": 112,
+    "triangles": 956129,
+    "textures": 71,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
-        1209.6983060007915,
-        1154.0986347943544,
-        1134.6847571898252
+        1248.3402814017609,
+        1116.1511769983917,
+        1129.3333824025467
       ],
-      "median_ms": 1154.0986347943544,
-      "images_per_second": 3549.090066058223,
+      "median_ms": 1129.3333824025467,
+      "images_per_second": 3626.918378420869,
       "steps": 5,
       "warmup": 3,
       "repeats": 3,
@@ -489,7 +504,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -501,28 +515,159 @@
       "max_mae_from_first": 0.0,
       "motion_mae": 2.618610143661499
     },
-    "setup_to_first_frame_s": 5.1721913669025525,
+    "setup_to_first_frame_s": 4.918745609000325,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 19.17877197265625,
-    "geoms": 101,
-    "meshes": 112,
-    "triangles": 956129,
-    "textures": 70,
     "run": {
-      "status": "passed",
+      "wall_seconds": 29.26299387589097,
       "device_peak_mib_sampled": 19640,
       "memory_sampling_ms": 200,
-      "wall_seconds": 29.840614023036323
+      "status": "passed"
+    }
+  },
+  {
+    "scene": "home",
+    "backend": "isaaclab-native-rtx",
+    "num_envs": 4096,
+    "width": 640,
+    "height": 480,
+    "camera_batch_size": 16,
+    "timing": {
+      "samples_ms": [
+        115550.28611398302,
+        112702.01724907383,
+        112758.3340560086
+      ],
+      "median_ms": 112758.3340560086,
+      "images_per_second": 36.325474602750525,
+      "steps": 1,
+      "warmup": 1,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "setup_to_first_frame_s": 134.8363051660126,
+    "device_used_before_gib": 2.9632568359375,
+    "device_used_after_gib": 16.6851806640625,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "lights": [
+      {
+        "name": "factory/sun",
+        "type": "directional",
+        "position": [
+          -4.0,
+          -1.0,
+          5.0
+        ],
+        "direction": [
+          0.6547706044716511,
+          0.22916971156507787,
+          -0.7202476649188163
+        ],
+        "diffuse": [
+          2.4000000953674316,
+          2.1500000953674316,
+          1.7999999523162842
+        ],
+        "ambient": [
+          0.4000000059604645,
+          0.4300000071525574,
+          0.47999998927116394
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rtx_intensity": 3000.0001192092896,
+        "rtx_color": [
+          1.0,
+          0.8958333374725446,
+          0.7499999503294646
+        ]
+      },
+      {
+        "name": "factory/fill",
+        "type": "point",
+        "position": [
+          0.0,
+          0.1,
+          2.85
+        ],
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "diffuse": [
+          1.2999999523162842,
+          1.399999976158142,
+          1.600000023841858
+        ],
+        "ambient": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.15000000596046448
+        ],
+        "rtx_intensity": 15680000.233650208,
+        "rtx_color": [
+          0.8124999580904848,
+          0.8749999720603232,
+          1.0
+        ]
+      }
+    ],
+    "validation": {
+      "all_nonblack": true,
+      "max_mae_from_first": 5.2866668701171875,
+      "max_mae_from_single_env": 7.314167022705078,
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "motion_mae": 2.506298780441284
+    },
+    "scene_revision": "room-template-without-static-robot-v2",
+    "material_revision": "before-box-uv-textures",
+    "scene_xml_sha256": null,
+    "scheduling": "real USD replicas; native RTX camera retargeting; active local lights only; full RGB tensor retained",
+    "quality": {
+      "aa": "DLAA",
+      "samples_per_pixel": 4,
+      "max_bounces": 8
+    },
+    "effective_rtx_settings": {
+      "/rtx/rendermode": "RealTimePathTracing",
+      "/rtx/rtpt/maxBounces": 8
+    },
+    "run": {
+      "wall_seconds": 705.8084729650291,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 17086,
+      "memory_sampling_ms": 200,
+      "status": "passed"
     }
   },
   {
     "backend": "hyperlux",
     "scene": "laboratory",
     "num_envs": 4096,
+    "hyperlux_batch_size": 128,
     "width": 640,
     "height": 480,
     "aa_grid": 1,
-    "hyperlux_batch_size": 128,
     "shadows": true,
     "lighting_profile": "indoor",
     "background_linear_rgb": [
@@ -550,6 +695,11 @@
         ]
       }
     ],
+    "geoms": 132,
+    "meshes": 115,
+    "triangles": 2018294,
+    "textures": 73,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
         262.2629676014185,
@@ -569,7 +719,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -584,25 +733,21 @@
     "setup_to_first_frame_s": 43.84703100705519,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 14.65728759765625,
-    "geoms": 132,
-    "meshes": 115,
-    "triangles": 2018294,
-    "textures": 73,
     "run": {
-      "status": "passed",
+      "wall_seconds": 52.28809784096666,
       "device_peak_mib_sampled": 14836,
       "memory_sampling_ms": 200,
-      "wall_seconds": 52.28809784096666
+      "status": "passed"
     }
   },
   {
     "backend": "mujoco_warp",
     "scene": "laboratory",
     "num_envs": 4096,
+    "hyperlux_batch_size": null,
     "width": 640,
     "height": 480,
     "aa_grid": null,
-    "hyperlux_batch_size": null,
     "shadows": true,
     "lighting_profile": "indoor",
     "background_linear_rgb": null,
@@ -626,6 +771,11 @@
         ]
       }
     ],
+    "geoms": 132,
+    "meshes": 115,
+    "triangles": 2018294,
+    "textures": 73,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
         1558.9461074210703,
@@ -645,7 +795,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -660,25 +809,123 @@
     "setup_to_first_frame_s": 8.942642451962456,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 19.53814697265625,
-    "geoms": 132,
-    "meshes": 115,
-    "triangles": 2018294,
-    "textures": 73,
     "run": {
-      "status": "passed",
+      "wall_seconds": 39.443791097030044,
       "device_peak_mib_sampled": 20008,
       "memory_sampling_ms": 200,
-      "wall_seconds": 39.443791097030044
+      "status": "passed"
     }
   },
   {
-    "backend": "hyperlux",
-    "scene": "windowless_warehouse_a",
+    "scene": "laboratory",
+    "backend": "isaaclab-native-rtx",
     "num_envs": 4096,
     "width": 640,
     "height": 480,
-    "aa_grid": 1,
+    "camera_batch_size": 16,
+    "timing": {
+      "samples_ms": [
+        103170.06278701592,
+        103266.3783680182,
+        103235.23738898803
+      ],
+      "median_ms": 103235.23738898803,
+      "images_per_second": 39.676375078853795,
+      "steps": 1,
+      "warmup": 1,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "setup_to_first_frame_s": 130.42008408997208,
+    "device_used_before_gib": 2.9632568359375,
+    "device_used_after_gib": 17.02520751953125,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "lights": [
+      {
+        "name": "factory/fill",
+        "type": "point",
+        "position": [
+          0.0,
+          0.1,
+          2.85
+        ],
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "diffuse": [
+          1.2999999523162842,
+          1.399999976158142,
+          1.600000023841858
+        ],
+        "ambient": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.15000000596046448
+        ],
+        "rtx_intensity": 15680000.233650208,
+        "rtx_color": [
+          0.8124999580904848,
+          0.8749999720603232,
+          1.0
+        ]
+      }
+    ],
+    "validation": {
+      "all_nonblack": true,
+      "max_mae_from_first": 4.890277862548828,
+      "max_mae_from_single_env": 5.963611125946045,
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "motion_mae": 1.9756824970245361
+    },
+    "scene_revision": "room-template-without-static-robot-v2",
+    "material_revision": "before-box-uv-textures",
+    "scene_xml_sha256": null,
+    "scheduling": "real USD replicas; native RTX camera retargeting; active local lights only; full RGB tensor retained",
+    "quality": {
+      "aa": "DLAA",
+      "samples_per_pixel": 4,
+      "max_bounces": 8
+    },
+    "effective_rtx_settings": {
+      "/rtx/rendermode": "RealTimePathTracing",
+      "/rtx/rtpt/maxBounces": 8
+    },
+    "run": {
+      "wall_seconds": 649.2833132259548,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 17434,
+      "memory_sampling_ms": 200,
+      "status": "passed"
+    }
+  },
+  {
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "bf87500de655cd615061bf9af99564a50cc9baaec7cc553ea5e538b92d5ab7eb",
+    "backend": "hyperlux",
+    "scene": "windowless_warehouse_a",
+    "num_envs": 4096,
     "hyperlux_batch_size": 128,
+    "width": 640,
+    "height": 480,
+    "aa_grid": 1,
     "shadows": true,
     "lighting_profile": "indoor",
     "background_linear_rgb": [
@@ -686,6 +933,7 @@
       0.2,
       0.22
     ],
+    "skybox_srgb": null,
     "active_lights": [
       {
         "name": "factory/factory_fill",
@@ -706,14 +954,19 @@
         ]
       }
     ],
+    "geoms": 157,
+    "meshes": 147,
+    "triangles": 1980859,
+    "textures": 93,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
-        348.7815561937168,
-        366.40938341151923,
-        386.90845600795
+        354.96363101992756,
+        347.13831138797104,
+        339.5058174151927
       ],
-      "median_ms": 366.40938341151923,
-      "images_per_second": 11178.753016266857,
+      "median_ms": 347.13831138797104,
+      "images_per_second": 11799.331464230698,
       "steps": 5,
       "warmup": 3,
       "repeats": 3,
@@ -725,7 +978,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -737,31 +989,30 @@
       "max_mae_from_first": 0.0,
       "motion_mae": 0.6341883540153503
     },
-    "setup_to_first_frame_s": 55.24443042301573,
+    "setup_to_first_frame_s": 55.86024054896552,
     "device_used_before_gib": 1.15924072265625,
-    "device_used_after_gib": 8.36236572265625,
-    "geoms": 157,
-    "meshes": 147,
-    "triangles": 1980859,
-    "textures": 93,
+    "device_used_after_gib": 8.36822509765625,
     "run": {
-      "status": "passed",
-      "device_peak_mib_sampled": 8390,
+      "wall_seconds": 66.07314502703957,
+      "device_peak_mib_sampled": 8396,
       "memory_sampling_ms": 200,
-      "wall_seconds": 65.47022637503687
+      "status": "passed"
     }
   },
   {
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "bf87500de655cd615061bf9af99564a50cc9baaec7cc553ea5e538b92d5ab7eb",
     "backend": "mujoco_warp",
     "scene": "windowless_warehouse_a",
     "num_envs": 4096,
+    "hyperlux_batch_size": null,
     "width": 640,
     "height": 480,
     "aa_grid": null,
-    "hyperlux_batch_size": null,
     "shadows": true,
     "lighting_profile": "indoor",
     "background_linear_rgb": null,
+    "skybox_srgb": null,
     "active_lights": [
       {
         "name": "factory/factory_fill",
@@ -782,14 +1033,19 @@
         ]
       }
     ],
+    "geoms": 157,
+    "meshes": 147,
+    "triangles": 1980859,
+    "textures": 93,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
-        2370.6543141976,
-        2405.3353038150817,
-        2379.5030530076474
+        2226.7691345885396,
+        2236.7227354086936,
+        2296.6686689993367
       ],
-      "median_ms": 2379.5030530076474,
-      "images_per_second": 1721.367827127909,
+      "median_ms": 2236.7227354086936,
+      "images_per_second": 1831.2506665031863,
       "steps": 5,
       "warmup": 3,
       "repeats": 3,
@@ -801,7 +1057,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -811,186 +1066,392 @@
       ],
       "all_nonblack": true,
       "max_mae_from_first": 0.0,
-      "motion_mae": 1.0325629711151123
+      "motion_mae": 2.1866841316223145
     },
-    "setup_to_first_frame_s": 7.32940349902492,
+    "setup_to_first_frame_s": 7.1671272329986095,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 13.10455322265625,
-    "geoms": 157,
-    "meshes": 147,
-    "triangles": 1980859,
-    "textures": 93,
     "run": {
-      "status": "passed",
-      "device_peak_mib_sampled": 13779,
-      "memory_sampling_ms": 200,
-      "wall_seconds": 53.867931132088415
-    }
-  },
-  {
-    "backend": "hyperlux",
-    "scene": "windowless_warehouse_b",
-    "num_envs": 4096,
-    "width": 640,
-    "height": 480,
-    "aa_grid": 1,
-    "hyperlux_batch_size": 128,
-    "shadows": true,
-    "lighting_profile": "indoor",
-    "background_linear_rgb": [
-      0.18,
-      0.2,
-      0.22
-    ],
-    "active_lights": [
-      {
-        "name": "factory/factory_fill",
-        "diffuse": [
-          5.699999809265137,
-          5.510000228881836,
-          5.130000114440918
-        ],
-        "ambient": [
-          0.0279999990016222,
-          0.03500000014901161,
-          0.041999999433755875
-        ],
-        "attenuation": [
-          0.0,
-          0.0,
-          1.0
-        ]
-      }
-    ],
-    "timing": {
-      "samples_ms": [
-        326.7120555974543,
-        327.0900781964883,
-        326.80113541428
-      ],
-      "median_ms": 326.80113541428,
-      "images_per_second": 12533.616184679326,
-      "steps": 5,
-      "warmup": 3,
-      "repeats": 3,
-      "num_envs": 4096,
-      "views": [
-        "overview"
-      ],
-      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
-      "synchronization": "CUDA synchronization at each repeat boundary",
-      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
-    },
-    "gpu": "NVIDIA GeForce RTX 4090",
-    "validation": {
-      "output_shape": [
-        4096,
-        480,
-        640,
-        3
-      ],
-      "all_nonblack": true,
-      "max_mae_from_first": 0.0,
-      "motion_mae": 0.6341883540153503
-    },
-    "setup_to_first_frame_s": 54.89054049202241,
-    "device_used_before_gib": 1.15924072265625,
-    "device_used_after_gib": 8.36236572265625,
-    "geoms": 157,
-    "meshes": 147,
-    "triangles": 1980859,
-    "textures": 93,
-    "run": {
-      "status": "passed",
-      "device_peak_mib_sampled": 8390,
-      "memory_sampling_ms": 200,
-      "wall_seconds": 64.46729629707988
-    }
-  },
-  {
-    "backend": "mujoco_warp",
-    "scene": "windowless_warehouse_b",
-    "num_envs": 4096,
-    "width": 640,
-    "height": 480,
-    "aa_grid": null,
-    "hyperlux_batch_size": null,
-    "shadows": true,
-    "lighting_profile": "indoor",
-    "background_linear_rgb": null,
-    "active_lights": [
-      {
-        "name": "factory/factory_fill",
-        "diffuse": [
-          1.9499999284744263,
-          1.8849999904632568,
-          1.7549999952316284
-        ],
-        "ambient": [
-          0.01600000075995922,
-          0.020000001415610313,
-          0.024000000208616257
-        ],
-        "attenuation": [
-          1.0,
-          0.0,
-          0.029999999329447746
-        ]
-      }
-    ],
-    "timing": {
-      "samples_ms": [
-        2440.3546147979796,
-        2458.919051196426,
-        2429.8996940022334
-      ],
-      "median_ms": 2440.3546147979796,
-      "images_per_second": 1678.4445896356256,
-      "steps": 5,
-      "warmup": 3,
-      "repeats": 3,
-      "num_envs": 4096,
-      "views": [
-        "overview"
-      ],
-      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
-      "synchronization": "CUDA synchronization at each repeat boundary",
-      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
-    },
-    "gpu": "NVIDIA GeForce RTX 4090",
-    "validation": {
-      "output_shape": [
-        4096,
-        480,
-        640,
-        3
-      ],
-      "all_nonblack": true,
-      "max_mae_from_first": 0.0,
-      "motion_mae": 1.0325629711151123
-    },
-    "setup_to_first_frame_s": 7.220443318947218,
-    "device_used_before_gib": 1.15924072265625,
-    "device_used_after_gib": 13.10455322265625,
-    "geoms": 157,
-    "meshes": 147,
-    "triangles": 1980859,
-    "textures": 93,
-    "run": {
-      "status": "passed",
+      "wall_seconds": 51.255586565006524,
       "device_peak_mib_sampled": 13420,
       "memory_sampling_ms": 200,
-      "wall_seconds": 54.661136670038104
+      "status": "passed"
     }
   },
   {
+    "scene": "windowless_warehouse_a",
+    "backend": "isaaclab-native-rtx",
+    "num_envs": 4096,
+    "width": 640,
+    "height": 480,
+    "camera_batch_size": 16,
+    "timing": {
+      "samples_ms": [
+        83769.71132901963,
+        82994.674893911,
+        81740.77134998515
+      ],
+      "median_ms": 82994.674893911,
+      "images_per_second": 49.35256394745524,
+      "steps": 1,
+      "warmup": 1,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "setup_to_first_frame_s": 113.2239817379741,
+    "device_used_before_gib": 2.84521484375,
+    "device_used_after_gib": 17.10284423828125,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "lights": [
+      {
+        "name": "factory/factory_fill",
+        "type": "point",
+        "position": [
+          0.0,
+          0.0,
+          3.95
+        ],
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "diffuse": [
+          1.5,
+          1.4500000476837158,
+          1.350000023841858
+        ],
+        "ambient": [
+          0.03999999910593033,
+          0.05000000074505806,
+          0.05999999865889549
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.029999999329447746
+        ],
+        "rtx_intensity": 14700000.0,
+        "rtx_color": [
+          1.0,
+          0.9666666984558105,
+          0.9000000158945719
+        ]
+      }
+    ],
+    "validation": {
+      "all_nonblack": true,
+      "max_mae_from_first": 8.766666412353516,
+      "max_mae_from_single_env": 9.643333435058594,
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "motion_mae": 2.0262608528137207
+    },
+    "scene_revision": "room-template-without-static-robot-v2",
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "bf87500de655cd615061bf9af99564a50cc9baaec7cc553ea5e538b92d5ab7eb",
+    "scheduling": "real USD replicas; native RTX camera retargeting; active local lights only; full RGB tensor retained",
+    "quality": {
+      "aa": "DLAA",
+      "samples_per_pixel": 4,
+      "max_bounces": 8
+    },
+    "effective_rtx_settings": {
+      "/rtx/rendermode": "RealTimePathTracing",
+      "/rtx/rtpt/maxBounces": 8
+    },
+    "run": {
+      "wall_seconds": 521.493803258054,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 17514,
+      "memory_sampling_ms": 200,
+      "status": "passed"
+    }
+  },
+  {
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "a311e7673e9701df66bb787e7397a451c4760907ca7e7dee3b571752357cdd77",
+    "backend": "hyperlux",
+    "scene": "windowless_warehouse_b",
+    "num_envs": 4096,
+    "hyperlux_batch_size": 128,
+    "width": 640,
+    "height": 480,
+    "aa_grid": 1,
+    "shadows": true,
+    "lighting_profile": "indoor",
+    "background_linear_rgb": [
+      0.18,
+      0.2,
+      0.22
+    ],
+    "skybox_srgb": null,
+    "active_lights": [
+      {
+        "name": "factory/factory_fill",
+        "diffuse": [
+          5.699999809265137,
+          5.510000228881836,
+          5.130000114440918
+        ],
+        "ambient": [
+          0.0279999990016222,
+          0.03500000014901161,
+          0.041999999433755875
+        ],
+        "attenuation": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "geoms": 157,
+    "meshes": 147,
+    "triangles": 1980859,
+    "textures": 93,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "timing": {
+      "samples_ms": [
+        340.2780055999756,
+        343.242096202448,
+        333.6506739957258
+      ],
+      "median_ms": 340.2780055999756,
+      "images_per_second": 12037.21643065929,
+      "steps": 5,
+      "warmup": 3,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "validation": {
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "all_nonblack": true,
+      "max_mae_from_first": 0.0,
+      "motion_mae": 0.6341883540153503
+    },
+    "setup_to_first_frame_s": 54.95897670299746,
+    "device_used_before_gib": 1.15924072265625,
+    "device_used_after_gib": 8.36822509765625,
+    "run": {
+      "wall_seconds": 64.4501626540441,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 8396,
+      "memory_sampling_ms": 200,
+      "status": "passed"
+    }
+  },
+  {
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "a311e7673e9701df66bb787e7397a451c4760907ca7e7dee3b571752357cdd77",
+    "backend": "mujoco_warp",
+    "scene": "windowless_warehouse_b",
+    "num_envs": 4096,
+    "hyperlux_batch_size": null,
+    "width": 640,
+    "height": 480,
+    "aa_grid": null,
+    "shadows": true,
+    "lighting_profile": "indoor",
+    "background_linear_rgb": null,
+    "skybox_srgb": null,
+    "active_lights": [
+      {
+        "name": "factory/factory_fill",
+        "diffuse": [
+          1.9499999284744263,
+          1.8849999904632568,
+          1.7549999952316284
+        ],
+        "ambient": [
+          0.01600000075995922,
+          0.020000001415610313,
+          0.024000000208616257
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.029999999329447746
+        ]
+      }
+    ],
+    "geoms": 157,
+    "meshes": 147,
+    "triangles": 1980859,
+    "textures": 93,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "timing": {
+      "samples_ms": [
+        2240.7043274026364,
+        2241.13420501817,
+        2228.112990781665
+      ],
+      "median_ms": 2240.7043274026364,
+      "images_per_second": 1827.9966481557037,
+      "steps": 5,
+      "warmup": 3,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "validation": {
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "all_nonblack": true,
+      "max_mae_from_first": 0.0,
+      "motion_mae": 2.1866841316223145
+    },
+    "setup_to_first_frame_s": 6.795646538026631,
+    "device_used_before_gib": 1.15924072265625,
+    "device_used_after_gib": 13.10455322265625,
+    "run": {
+      "wall_seconds": 50.446352444938384,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 13420,
+      "memory_sampling_ms": 200,
+      "status": "passed"
+    }
+  },
+  {
+    "scene": "windowless_warehouse_b",
+    "backend": "isaaclab-native-rtx",
+    "num_envs": 4096,
+    "width": 640,
+    "height": 480,
+    "camera_batch_size": 16,
+    "timing": {
+      "samples_ms": [
+        86388.45171604771,
+        86180.39681599475,
+        85625.00634999014
+      ],
+      "median_ms": 86180.39681599475,
+      "images_per_second": 47.528210026062425,
+      "steps": 1,
+      "warmup": 1,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "setup_to_first_frame_s": 119.99162465811241,
+    "device_used_before_gib": 2.9632568359375,
+    "device_used_after_gib": 17.16534423828125,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "lights": [
+      {
+        "name": "factory/factory_fill",
+        "type": "point",
+        "position": [
+          0.0,
+          0.0,
+          3.95
+        ],
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "diffuse": [
+          1.5,
+          1.4500000476837158,
+          1.350000023841858
+        ],
+        "ambient": [
+          0.03999999910593033,
+          0.05000000074505806,
+          0.05999999865889549
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.029999999329447746
+        ],
+        "rtx_intensity": 14700000.0,
+        "rtx_color": [
+          1.0,
+          0.9666666984558105,
+          0.9000000158945719
+        ]
+      }
+    ],
+    "validation": {
+      "all_nonblack": true,
+      "max_mae_from_first": 9.159722328186035,
+      "max_mae_from_single_env": 9.480834007263184,
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "motion_mae": 1.9787044525146484
+    },
+    "scene_revision": "room-template-without-static-robot-v2",
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "a311e7673e9701df66bb787e7397a451c4760907ca7e7dee3b571752357cdd77",
+    "scheduling": "real USD replicas; native RTX camera retargeting; active local lights only; full RGB tensor retained",
+    "quality": {
+      "aa": "DLAA",
+      "samples_per_pixel": 4,
+      "max_bounces": 8
+    },
+    "effective_rtx_settings": {
+      "/rtx/rendermode": "RealTimePathTracing",
+      "/rtx/rtpt/maxBounces": 8
+    },
+    "run": {
+      "wall_seconds": 550.3916778590064,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 17578,
+      "memory_sampling_ms": 200,
+      "status": "passed"
+    }
+  },
+  {
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "884046e656bcbe4be593a8e15c753198c42ccaaa6bf2f6a697df4dea72d392b5",
     "backend": "hyperlux",
     "scene": "outdoor",
     "num_envs": 4096,
+    "hyperlux_batch_size": 128,
     "width": 640,
     "height": 480,
     "aa_grid": 1,
-    "hyperlux_batch_size": 128,
     "shadows": true,
     "lighting_profile": "sun",
     "background_linear_rgb": [
@@ -998,6 +1459,7 @@
       0.6,
       0.78
     ],
+    "skybox_srgb": null,
     "active_lights": [
       {
         "name": "factory/outdoor_sun",
@@ -1018,14 +1480,19 @@
         ]
       }
     ],
+    "geoms": 106,
+    "meshes": 147,
+    "triangles": 1980859,
+    "textures": 93,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
-        197.24237299524248,
-        197.44955799542367,
-        197.42166679352522
+        200.9366953978315,
+        201.00128641352057,
+        200.70223421789706
       ],
-      "median_ms": 197.42166679352522,
-      "images_per_second": 20747.46944712927,
+      "median_ms": 200.9366953978315,
+      "images_per_second": 20384.529525034697,
       "steps": 5,
       "warmup": 3,
       "repeats": 3,
@@ -1037,7 +1504,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -1047,33 +1513,37 @@
       ],
       "all_nonblack": true,
       "max_mae_from_first": 0.0,
-      "motion_mae": 0.5629503130912781
+      "motion_mae": 0.2777235209941864
     },
-    "setup_to_first_frame_s": 14.312359949108213,
+    "setup_to_first_frame_s": 14.2994008109672,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 7.45025634765625,
-    "geoms": 106,
-    "meshes": 147,
-    "triangles": 1980859,
-    "textures": 93,
     "run": {
-      "status": "passed",
+      "wall_seconds": 21.239599080989137,
+      "process_sampling_ms": 1000,
       "device_peak_mib_sampled": 7456,
       "memory_sampling_ms": 200,
-      "wall_seconds": 21.233758243964985
+      "status": "passed"
     }
   },
   {
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": "884046e656bcbe4be593a8e15c753198c42ccaaa6bf2f6a697df4dea72d392b5",
     "backend": "mujoco_warp",
     "scene": "outdoor",
     "num_envs": 4096,
+    "hyperlux_batch_size": null,
     "width": 640,
     "height": 480,
     "aa_grid": null,
-    "hyperlux_batch_size": null,
     "shadows": true,
     "lighting_profile": "sun",
     "background_linear_rgb": null,
+    "skybox_srgb": [
+      0.7014107175340978,
+      0.7977377330312598,
+      0.8962438838245138
+    ],
     "active_lights": [
       {
         "name": "factory/outdoor_sun",
@@ -1094,14 +1564,19 @@
         ]
       }
     ],
+    "geoms": 106,
+    "meshes": 147,
+    "triangles": 1980859,
+    "textures": 94,
+    "gpu": "NVIDIA GeForce RTX 4090",
     "timing": {
       "samples_ms": [
-        769.7023824090138,
-        763.6714075924829,
-        755.3638188168406
+        730.7900934014469,
+        710.0845579989254,
+        705.0490166060627
       ],
-      "median_ms": 763.6714075924829,
-      "images_per_second": 5363.563385085833,
+      "median_ms": 710.0845579989254,
+      "images_per_second": 5768.327101131241,
       "steps": 5,
       "warmup": 3,
       "repeats": 3,
@@ -1113,7 +1588,6 @@
       "synchronization": "CUDA synchronization at each repeat boundary",
       "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
     },
-    "gpu": "NVIDIA GeForce RTX 4090",
     "validation": {
       "output_shape": [
         4096,
@@ -1125,18 +1599,115 @@
       "max_mae_from_first": 0.0,
       "motion_mae": 0.45868492126464844
     },
-    "setup_to_first_frame_s": 5.466863186098635,
+    "setup_to_first_frame_s": 5.175914873019792,
     "device_used_before_gib": 1.15924072265625,
     "device_used_after_gib": 13.07330322265625,
-    "geoms": 106,
-    "meshes": 147,
-    "triangles": 1980859,
-    "textures": 93,
     "run": {
-      "status": "passed",
+      "wall_seconds": 21.43964379595127,
+      "process_sampling_ms": 1000,
       "device_peak_mib_sampled": 13388,
       "memory_sampling_ms": 200,
-      "wall_seconds": 22.832097003934905
+      "status": "passed"
+    }
+  },
+  {
+    "scene": "outdoor",
+    "backend": "isaaclab-native-rtx",
+    "num_envs": 4096,
+    "width": 640,
+    "height": 480,
+    "camera_batch_size": 16,
+    "timing": {
+      "samples_ms": [
+        26227.13799297344,
+        25912.697344087064,
+        26124.747613910586
+      ],
+      "median_ms": 26124.747613910586,
+      "images_per_second": 156.78620366150494,
+      "steps": 1,
+      "warmup": 1,
+      "repeats": 3,
+      "num_envs": 4096,
+      "views": [
+        "overview"
+      ],
+      "scope": "moving root pose + transform update + RGB GPU output; no physics stepping, CPU image copy or encoding",
+      "synchronization": "CUDA synchronization at each repeat boundary",
+      "motion": "x = 0.45 * sin(2*pi*frame/24), y = -0.3; fixed joints, camera and lights"
+    },
+    "setup_to_first_frame_s": 48.911924796993844,
+    "device_used_before_gib": 2.9632568359375,
+    "device_used_after_gib": 16.8040771484375,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "lights": [
+      {
+        "name": "factory/outdoor_sun",
+        "type": "directional",
+        "position": [
+          -4.0,
+          -3.0,
+          8.0
+        ],
+        "direction": [
+          0.6666666666666666,
+          0.3333333333333333,
+          -0.6666666666666666
+        ],
+        "diffuse": [
+          2.200000047683716,
+          2.200000047683716,
+          2.200000047683716
+        ],
+        "ambient": [
+          0.18000000715255737,
+          0.2199999988079071,
+          0.2800000011920929
+        ],
+        "attenuation": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rtx_intensity": 2750.000059604645,
+        "rtx_color": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "validation": {
+      "all_nonblack": true,
+      "max_mae_from_first": 0.9933333396911621,
+      "max_mae_from_single_env": 1.519444465637207,
+      "output_shape": [
+        4096,
+        480,
+        640,
+        3
+      ],
+      "motion_mae": 0.387432724237442
+    },
+    "scene_revision": "room-template-without-static-robot-v2",
+    "material_revision": "box-uv-textures-v1",
+    "scene_xml_sha256": null,
+    "scheduling": "real USD replicas; native RTX camera retargeting; active local lights only; full RGB tensor retained",
+    "quality": {
+      "aa": "DLAA",
+      "samples_per_pixel": 4,
+      "max_bounces": 8
+    },
+    "effective_rtx_settings": {
+      "/rtx/rendermode": "RealTimePathTracing",
+      "/rtx/rtpt/maxBounces": 8
+    },
+    "run": {
+      "wall_seconds": 181.41466773999855,
+      "process_sampling_ms": 1000,
+      "device_peak_mib_sampled": 17208,
+      "memory_sampling_ms": 200,
+      "status": "passed"
     }
   }
 ]
