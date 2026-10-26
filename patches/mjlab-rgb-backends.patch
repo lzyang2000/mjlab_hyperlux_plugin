@@ -1,0 +1,254 @@
+diff --git a/docs/source/changelog.rst b/docs/source/changelog.rst
+index ae2b9d7d6..4da4c73dc 100644
+--- a/docs/source/changelog.rst
++++ b/docs/source/changelog.rst
+@@ -8,6 +8,9 @@ Upcoming version (not yet released)
+ Added
+ ^^^^^
+ 
++- Added ``CameraSensorCfg.rgb_backend`` and the ``mjlab.rgb_renderers`` entry-point
++  group for optional RGB plugins. Depth, segmentation, and raycasts continue to
++  use MuJoCo Warp.
+ - Added ``GridPatternCfg.offset`` to shift the ray grid in frame-local XY.
+ - ``GridPatternCfg.resolution`` accepts a per-axis ``(x, y)`` tuple.
+ - Added a ``cu126`` extra (``uv sync --extra cu126``) that installs torch built for
+diff --git a/docs/source/sensors/rgbd_camera.rst b/docs/source/sensors/rgbd_camera.rst
+index cd7d8c845..af8f8c2cb 100644
+--- a/docs/source/sensors/rgbd_camera.rst
++++ b/docs/source/sensors/rgbd_camera.rst
+@@ -35,6 +35,24 @@ Quick start
+     data.depth    # [B, 120, 160, 1] float32
+ 
+ 
++Optional RGB plugins
++--------------------
++
++``CameraSensorCfg.rgb_backend`` defaults to ``"mujoco_warp"``. An installed
++package can register a factory under the ``mjlab.rgb_renderers`` entry-point
++group and provide its own camera configuration subclass. The factory receives
++``(mj_model, model, data, sensors, wp_device)`` and returns renderers implementing
++``mjlab.sensor.rgb_renderer.RgbRenderer``.
++
++Each renderer owns device-resident uint8 RGB tensors keyed by MuJoCo camera ID.
++``render()`` is called outside the captured sensing graph, before sensor cache
++invalidation. The renderer must order GPU work so the current Torch stream can
++consume the result, and ``wait_for_rgb()`` must make that ordering visible to
++the caller. ``close()`` releases resources and is also called when model field
++expansion recreates the sensing context. Depth, segmentation and raycasts
++continue to use MuJoCo Warp. RGB-only plugin scenes skip Warp rendering.
++
++
+ Creating vs wrapping cameras
+ -----------------------------
+ 
+diff --git a/src/mjlab/envs/manager_based_rl_env.py b/src/mjlab/envs/manager_based_rl_env.py
+index 666593011..563bd2630 100644
+--- a/src/mjlab/envs/manager_based_rl_env.py
++++ b/src/mjlab/envs/manager_based_rl_env.py
+@@ -526,6 +526,8 @@ class ManagerBasedRlEnv:
+       )
+ 
+   def close(self) -> None:
++    if self.scene.sensor_context is not None:
++      self.scene.sensor_context.close()
+     if self._offline_renderer is not None:
+       self._offline_renderer.close()
+     self.recorder_manager.close()
+diff --git a/src/mjlab/sensor/camera_sensor.py b/src/mjlab/sensor/camera_sensor.py
+index 93b9f35c0..73b443a02 100644
+--- a/src/mjlab/sensor/camera_sensor.py
++++ b/src/mjlab/sensor/camera_sensor.py
+@@ -75,6 +75,12 @@ class CameraSensorCfg(SensorCfg):
+   """Data types to capture: any combination of "rgb", "depth",
+   and "segmentation"."""
+ 
++  rgb_backend: str = "mujoco_warp"
++  """RGB backend name, built-in or registered under ``mjlab.rgb_renderers``.
++
++  Depth, segmentation and raycasts always use MuJoCo Warp.
++  """
++
+   use_textures: bool = True
+   """Whether to use textures in rendering."""
+ 
+diff --git a/src/mjlab/sensor/sensor_context.py b/src/mjlab/sensor/sensor_context.py
+index f04856aa2..fbf222025 100644
+--- a/src/mjlab/sensor/sensor_context.py
++++ b/src/mjlab/sensor/sensor_context.py
+@@ -3,7 +3,9 @@
+ from __future__ import annotations
+ 
+ import warnings
++from collections import defaultdict
+ from collections.abc import Sequence
++from importlib.metadata import entry_points
+ from typing import TYPE_CHECKING
+ 
+ import mujoco
+@@ -14,6 +16,7 @@ import warp as wp
+ if TYPE_CHECKING:
+   from mjlab.sensor.camera_sensor import CameraSensor
+   from mjlab.sensor.raycast_sensor import RayCastSensor
++  from mjlab.sensor.rgb_renderer import RgbRenderer
+ 
+ 
+ @wp.kernel
+@@ -77,6 +80,7 @@ class SensorContext:
+     self._depth_adr_np: list[int] | None = None
+     self._seg_adr_np: list[int] | None = None
+     self._disable_precomputed_rays = False
++    self._rgb_renderers: list[RgbRenderer] = []
+     self._create_context(mj_model)
+ 
+     # Wire up sensors to use this context.
+@@ -93,6 +97,17 @@ class SensorContext:
+   def has_raycasts(self) -> bool:
+     return len(self.raycast_sensors) > 0
+ 
++  @property
++  def has_warp_cameras(self) -> bool:
++    return any(
++      s.cfg.rgb_backend == "mujoco_warp" or any(t != "rgb" for t in s.cfg.data_types)
++      for s in self.camera_sensors
++    )
++
++  @property
++  def has_warp_sensors(self) -> bool:
++    return self.has_warp_cameras or self.has_raycasts
++
+   @property
+   def render_context(self) -> mjwarp.RenderContext:
+     return self._ctx
+@@ -125,6 +140,16 @@ class SensorContext:
+     for sensor in self.camera_sensors:
+       sensor._invalidate_cache()
+ 
++  def render_rgb(self) -> None:
++    """Submit external renderers outside Warp's captured sensing graph."""
++    for renderer in self._rgb_renderers:
++      renderer.render()
++
++  def close(self) -> None:
++    for renderer in self._rgb_renderers:
++      renderer.close()
++    self._rgb_renderers.clear()
++
+   def get_rgb(self, cam_idx: int) -> torch.Tensor:
+     """Get unpacked RGB data for a camera.
+ 
+@@ -134,6 +159,10 @@ class SensorContext:
+     Returns:
+       Tensor of shape [num_envs, height, width, 3] (uint8).
+     """
++    for renderer in self._rgb_renderers:
++      if cam_idx in renderer.rgb:
++        renderer.wait_for_rgb()
++        return renderer.rgb[cam_idx]
+     if self._rgb_unpacked is None:
+       raise RuntimeError(
+         "RGB rendering is not enabled. Ensure at least one camera sensor has 'rgb' in"
+@@ -267,6 +296,18 @@ class SensorContext:
+ 
+   def _create_context(self, mj_model: mujoco.MjModel) -> None:
+     """Create the mujoco_warp RenderContext."""
++    self.close()
++    groups: dict[str, list[CameraSensor]] = defaultdict(list)
++    for sensor in self.camera_sensors:
++      if sensor.cfg.rgb_backend != "mujoco_warp" and "rgb" in sensor.cfg.data_types:
++        groups[sensor.cfg.rgb_backend].append(sensor)
++    for backend, sensors in groups.items():
++      factory = entry_points(group="mjlab.rgb_renderers")[backend].load()
++      self._rgb_renderers.extend(
++        factory(mj_model, self._model, self._data, sensors, self.wp_device)
++      )
++    if not self.has_warp_sensors:
++      return
+     ncam = mj_model.ncam
+     cam_res: list[tuple[int, int]] | None = None
+     render_rgb: list[bool] | None = None
+@@ -307,7 +348,9 @@ class SensorContext:
+       for s in self.camera_sensors:
+         cam_active[s.camera_idx] = True
+         cam_res.append((s.cfg.width, s.cfg.height))
+-        render_rgb.append("rgb" in s.cfg.data_types)
++        render_rgb.append(
++          "rgb" in s.cfg.data_types and s.cfg.rgb_backend == "mujoco_warp"
++        )
+         render_depth.append("depth" in s.cfg.data_types)
+         render_seg.append("segmentation" in s.cfg.data_types)
+     else:
+diff --git a/src/mjlab/sim/sim.py b/src/mjlab/sim/sim.py
+index eda700570..16d44466d 100644
+--- a/src/mjlab/sim/sim.py
++++ b/src/mjlab/sim/sim.py
+@@ -380,7 +380,7 @@ class Simulation:
+         with wp.ScopedCapture() as capture:
+           mjwarp.reset_data(self.wp_model, self.wp_data, reset=self._reset_mask_wp)
+         self.reset_graph = capture.graph
+-        if self._sensor_context is not None:
++        if self._sensor_context is not None and self._sensor_context.has_warp_sensors:
+           with wp.ScopedCapture() as capture:
+             self._sense_kernel()
+           self.sense_graph = capture.graph
+@@ -529,9 +529,9 @@ class Simulation:
+   def sense(self) -> None:
+     """Execute the sense pipeline: prepare -> graph -> finalize.
+ 
+-    Runs BVH refit, camera rendering, and raycasting in a single
+-    CUDA graph launch. Should be called once per env step, right
+-    before observation computation.
++    Runs MuJoCo Warp BVH refit, camera rendering, and raycasting in a
++    single CUDA graph, then submits optional RGB renderer plugins.
++    Call once per env step, right before observation computation.
+     """
+     if self._sensor_context is None:
+       return
+@@ -545,6 +545,7 @@ class Simulation:
+       else:
+         self._sense_kernel()
+ 
++    ctx.render_rgb()
+     ctx.finalize()
+ 
+   # Private methods.
+@@ -553,11 +554,13 @@ class Simulation:
+     """GPU kernel sequence for sensing (captured in sense_graph)."""
+     assert self._sensor_context is not None
+     ctx = self._sensor_context
++    if not ctx.has_warp_sensors:
++      return
+     rc = ctx.render_context
+ 
+     mjwarp.refit_bvh(self.wp_model, self.wp_data, rc)
+ 
+-    if ctx.has_cameras:
++    if ctx.has_warp_cameras:
+       mjwarp.render(self.wp_model, self.wp_data, rc)
+       ctx.unpack_rgb()
+ 
+diff --git a/src/mjlab/sensor/rgb_renderer.py b/src/mjlab/sensor/rgb_renderer.py
+new file mode 100644
+index 000000000..25a6c2703
+--- /dev/null
++++ b/src/mjlab/sensor/rgb_renderer.py
+@@ -0,0 +1,20 @@
++"""Minimal interface for optional RGB renderer plugins.
++
++Register a factory under the ``mjlab.rgb_renderers`` entry-point group.
++SensorContext calls it with (mj_model, model, data, sensors, wp_device).
++It returns renderers, each owning RGB tensors for its MuJoCo camera IDs.
++"""
++
++from typing import Protocol
++
++import torch
++
++
++class RgbRenderer(Protocol):
++  rgb: dict[int, torch.Tensor]
++
++  def render(self) -> None: ...
++
++  def wait_for_rgb(self) -> None: ...
++
++  def close(self) -> None: ...

@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mjlab-hyperlux"
+version = "0.1.2"
+description = "HyperLux RGB camera backend for mjlab"
+requires-python = ">=3.10,<3.15"
+dependencies = ["mjlab>=1.6,<1.7", "hyperlux==0.1.8", "cmake>=3.24"]
+readme = "README.md"
+license = "Apache-2.0"
+
+[project.urls]
+Repository = "https://github.com/lzyang2000/mjlab_hyperlux_plugin"
+Issues = "https://github.com/lzyang2000/mjlab_hyperlux_plugin/issues"
+
+[project.optional-dependencies]
+examples = ["pillow>=10", "tyro>=1.0"]
+dev = ["pytest>=8", "ruff>=0.12", "pyright>=1.1"]
+
+[project.entry-points."mjlab.rgb_renderers"]
+hyperlux = "mjlab_hyperlux.renderer:HyperLuxRenderer.create_groups"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mjlab_hyperlux"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/examples", "/patches", "/pyproject.toml", "/README.md", "/LICENSE", "/THIRD_PARTY_NOTICES.md", "/docs/setup.md", "/docs/usage.md"]
+
+[tool.ruff]
+indent-width = 2
+line-length = 88
+extend-exclude = ["mjlab"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
+ignore = ["B011"]
+
+[tool.pyright]
+pythonVersion = "3.10"
+venvPath = "mjlab"
+venv = ".venv"
+stubPath = "mjlab/typings"
+include = ["src", "tests", "examples"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore:MULTICCD is enabled, but the scene contains CCD pairs:UserWarning"]

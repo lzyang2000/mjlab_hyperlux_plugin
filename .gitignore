@@ -1,0 +1,11 @@
+.venv/
+/mjlab
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+MUJOCO_LOG.TXT
+outputs/
+benchmark_results/

@@ -1,0 +1,42 @@
+--- a/include/rl_tools/hyperlux/backends/optix/device_impl.h
++++ b/include/rl_tools/hyperlux/backends/optix/device_impl.h
+@@ -628,3 +628,4 @@
+         if constexpr (ENABLE_PUNCTUAL_LIGHT_SHADOWS) {
+-          if (light.type != 0 && trace_shadow_occluded_composed(self.world, camera, hit_point + N * 2e-3f, L, light_distance)) continue;
++          // Directional lights use the unbounded light_distance initialized above.
++          if (trace_shadow_occluded_composed(self.world, camera, hit_point + N * 2e-3f, L, light_distance)) continue;
+         }
+--- a/cmake/patches/owl_compile_options.cmake
++++ b/cmake/patches/owl_compile_options.cmake
+@@ -146 +146,31 @@
+     }]=])
++
++# RGB may trace one reflection/transmission, then a shadow ray: three levels.
++rl_tools_patch_owl("owl/DeviceContext.cpp" [=[pipelineLinkOptions.maxTraceDepth          = 2;]=] [=[pipelineLinkOptions.maxTraceDepth          = 3;]=])
++
++# Size the continuation stack for that depth using the compiled program groups.
++rl_tools_patch_owl("owl/DeviceContext.cpp" [=[#include <optix_function_table_definition.h>]=] [=[#include <optix_function_table_definition.h>
++#include <optix_stack_size.h>]=])
++rl_tools_patch_owl("owl/DeviceContext.cpp" [=[    OPTIX_CHECK(optixPipelineSetStackSize
++                (pipeline,]=] [=[    OptixStackSizes stackSizes{};
++    for (auto program : allPGs)
++      OPTIX_CHECK(optixUtilAccumulateStackSizes(program, &stackSizes, pipeline));
++    uint32_t directTraversal, directState, continuation;
++    OPTIX_CHECK(optixUtilComputeStackSizes(&stackSizes,
++                pipelineLinkOptions.maxTraceDepth, 0, 0,
++                &directTraversal, &directState, &continuation));
++    OPTIX_CHECK(optixPipelineSetStackSize
++                (pipeline,]=])
++rl_tools_patch_owl("owl/DeviceContext.cpp" [=[                 2*1024,
++                 /* [in] The direct stack size requirement for
++                    direct callables invoked from IS or AH. */
++                 2*1024,
++                 /* [in] The direct stack size requirement for
++                    direct callables invoked from RG, MS, or CH.  */
++                 2*1024,]=] [=[                 directTraversal,
++                 /* [in] The direct stack size requirement for
++                    direct callables invoked from IS or AH. */
++                 directState,
++                 /* [in] The direct stack size requirement for
++                    direct callables invoked from RG, MS, or CH.  */
++                 continuation,]=])
